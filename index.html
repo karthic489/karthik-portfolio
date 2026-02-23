@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- ═══ PRIMARY SEO ═══════════════════════════════════════════ -->
-<title>Karthik C | ePowertrain & EV Engineer | AI · LLM · ECU Virtualization | Bengaluru</title>
-<meta name="description" content="Karthik C — Senior Automotive Engineer with 9+ years in ePowertrain, ECU Virtualization, AUTOSAR & AI/LLM integration. VCU Lead at Planet Electric, SiL Lead at Bosch (Mercedes-Benz AG). 2 Patents. Based in Bengaluru, India.">
+<title>Karthik C | ePowertrain · AI/LLM Engineer | Bengaluru</title>
+<meta name="description" content="Karthik C — Automotive Engineer, 9+ years in ePowertrain, ECU Virtualization & AUTOSAR. AI/LLM & RAG specialist. 2 Patents. Bosch · Mercedes-Benz · Bengaluru.">
 <meta name="keywords" content="Karthik C, ePowertrain Engineer, EV Engineer Bengaluru, ECU Virtualization, AUTOSAR Engineer, VCU Lead, SiL Engineer, LLM Engineer, RAG Pipeline, Prompt Engineering, Bosch Engineer, Electric Vehicle Architect, Automotive Software Engineer India, MATLAB Simulink, dSPACE, CANoe, Mercedes-Benz, KPIT, Planet Electric">
 <meta name="author" content="Karthik C">
 <meta name="robots" content="index, follow">
@@ -239,7 +239,7 @@
     animation: fadeUp 0.8s ease 0.3s forwards;
   }
 
-  .hero-name {
+  .hero-name, h1.hero-name {
     font-family: var(--font-display);
     font-size: clamp(5rem, 14vw, 14rem);
     line-height: 0.9;
@@ -248,6 +248,9 @@
     opacity: 0;
     animation: fadeUp 0.8s ease 0.5s forwards;
     position: relative;
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
   }
   .hero-name span { color: var(--accent); }
 
@@ -1326,7 +1329,7 @@
 
   <div style="position:relative;z-index:2;">
     <div class="hero-eyebrow">// EV · Automotive · AI Engineer</div>
-    <div class="hero-name glitch" data-text="KARTHIK">KARTHIK</div>
+    <h1 class="hero-name glitch" data-text="KARTHIK">KARTHIK</h1>
     <div class="hero-title">ePowertrain · ECU Virtualization · AI / LLMs</div>
     <div class="hero-stats">
       <div class="stat-item">
@@ -1388,7 +1391,7 @@
         </div>
         <div class="detail-row">
           <div class="detail-key">Email</div>
-          <div class="detail-val"><a href="/cdn-cgi/l/email-protection#c4afa5b6b0acada7f0fcfd84a3a9a5ada8eaa7aba9"><span class="__cf_email__" data-cfemail="a6cdc7d4d2cecfc5929e9fe6c1cbc7cfca88c5c9cb">[email&#160;protected]</span></a></div>
+          <div class="detail-val"><a href="mailto:karthic489@gmail.com">karthic489@gmail.com</a></div>
         </div>
       </div>
     </div>
@@ -1684,11 +1687,11 @@
       <div class="contact-cta reveal">LET'S BUILD THE FUTURE OF <span>MOBILITY</span></div>
     </div>
     <div class="contact-links reveal">
-      <a class="contact-link" href="/cdn-cgi/l/email-protection#bfd4decdcbd7d6dc8b8786ffd8d2ded6d391dcd0d2">
+      <a class="contact-link" href="mailto:karthic489@gmail.com">
         <span class="cl-icon">✉️</span>
         <div>
           <div class="cl-label">Email</div>
-          <div class="cl-val"><span class="__cf_email__" data-cfemail="640f0516100c0d07505c5d240309050d084a070b09">[email&#160;protected]</span></div>
+          <div class="cl-val">karthic489@gmail.com</div>
         </div>
       </a>
       <a class="contact-link" href="https://www.linkedin.com/in/karthic489/" target="_blank">
@@ -1716,7 +1719,7 @@
   <div class="footer-copy">© 2026 · Automotive & EV Engineer · Bengaluru</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // CURSOR
 const cursor = document.getElementById('cursor');
 const cursorRing = document.getElementById('cursorRing');
@@ -1842,4 +1845,18 @@ window.addEventListener('scroll', () => {
 // HAMBURGER MENU
 const hamburger = document.getElementById('hamburger');
 const mobileNav = document.getElementById('mobileNav');
-if (hamb
+if (hamburger && mobileNav) {
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+  });
+  document.querySelectorAll('.mob-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileNav.classList.remove('open');
+    });
+  });
+}
+</script>
+</body>
+</html>
