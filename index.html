@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karthik C — Automotive & EV Specialist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --deep: #0d0d0f;
+    --carbon: #111215;
+    --panel: #181a1f;
+    --border: #252830;
+    --accent: #e8ff00;
+    --accent2: #ff4d00;
+    --blue: #00d4ff;
+    --white: #f0f0f0;
+    --muted: #888;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 40px; height: 40px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: left 0.12s ease, top 0.12s ease, width 0.2s, height 0.2s, border-color 0.2s;
+    opacity: 0.6;
+  }
+
+  /* SCANLINE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
+    pointer-events: none;
+    z-index: 9990;
+  }
+
+  /* NOISE TEXTURE */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9989;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); }
+
+  /* ─── HERO ─────────────────────────────────────────────── */
+  #hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 6vw 6vh;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 40%, rgba(232,255,0,0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(0,212,255,0.04) 0%, transparent 60%),
+      linear-gradient(160deg, #0a0a0c 0%, #0d0f14 50%, #080808 100%);
+  }
+
+  /* Animated grid lines */
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,255,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,255,0,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+    animation: gridPulse 8s ease-in-out infinite;
+  }
+  @keyframes gridPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* Speed lines */
+  .speed-lines {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  .speed-line {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    animation: speedLine 3s ease-in-out infinite;
+  }
+  @keyframes speedLine {
+    0% { transform: translateX(-100%); opacity: 0; width: 30%; }
+    20% { opacity: 0.6; }
+    100% { transform: translateX(400%); opacity: 0; width: 60%; }
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 14vw, 14rem);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.5s forwards;
+    position: relative;
+  }
+  .hero-name span { color: var(--accent); }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 3vw, 2.8rem);
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.7s forwards;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.9s forwards;
+  }
+  .stat-item { text-align: left; }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    right: 6vw;
+    bottom: 6vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+  .scroll-text {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    writing-mode: vertical-rl;
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { transform: scaleY(1); opacity: 1; }
+    50% { transform: scaleY(0.5); opacity: 0.4; }
+  }
+
+  .hero-badge {
+    position: absolute;
+    top: 6vh;
+    right: 6vw;
+    border: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+    background: rgba(255,255,255,0.02);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    animation: fadeDown 0.8s ease 1s forwards;
+  }
+  .badge-text {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .badge-cert {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-top: 0.25rem;
+  }
+
+  .hero-nav {
+    position: absolute;
+    top: 6vh;
+    left: 6vw;
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    opacity: 0;
+    animation: fadeDown 0.8s ease 0.8s forwards;
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+  }
+  .nav-links { display: flex; gap: 1.8rem; }
+  .nav-link {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+  .nav-link:hover { color: var(--accent); }
+  .nav-link:hover::after { width: 100%; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── SECTIONS ──────────────────────────────────────────── */
+  section { padding: 8vw 6vw; position: relative; }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 7rem);
+    line-height: 0.95;
+    color: var(--white);
+    margin-bottom: 4rem;
+  }
+  .section-title span { color: var(--accent); }
+
+  /* ─── ABOUT ─────────────────────────────────────────────── */
+  #about { background: var(--deep); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6vw;
+    align-items: start;
+  }
+
+  .about-text {
+    font-size: 1.15rem;
+    font-weight: 400;
+    line-height: 1.7;
+    color: rgba(240,240,240,0.75);
+  }
+  .about-text strong {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .about-text p + p { margin-top: 1.2rem; }
+
+  .about-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    width: 100%;
+  }
+  .detail-row {
+    display: table;
+    width: 100%;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.3s;
+  }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-row:hover { background: rgba(232,255,0,0.03); }
+  .detail-key {
+    display: table-cell;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 1rem 1.5rem;
+    width: 38%;
+    border-right: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .detail-val {
+    display: table-cell;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--white);
+    padding: 1rem 1.5rem;
+    width: 62%;
+    vertical-align: middle;
+  }
+  .detail-val a { color: var(--blue); text-decoration: none; }
+  .detail-val a:hover { color: var(--accent); }
+
+  /* PATENT CARDS */
+  .patent-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    margin-top: 4rem;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .patent-card {
+    background: var(--carbon);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .patent-card:hover { background: var(--panel); }
+  .patent-card::before {
+    content: '⚡';
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.2rem;
+    opacity: 0.3;
+  }
+  .patent-num {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .patent-title {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.4;
+  }
+
+  /* ─── EXPERTISE ─────────────────────────────────────────── */
+  #expertise { background: var(--black); }
+
+  .expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 5rem;
+  }
+  .exp-card {
+    background: var(--carbon);
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s, transform 0.4s;
+    cursor: default;
+  }
+  .exp-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--blue));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .exp-card:hover { background: var(--panel); }
+  .exp-card:hover::before { transform: scaleX(1); }
+
+  .exp-icon {
+    font-size: 2rem;
+    margin-bottom: 1.2rem;
+    display: block;
+  }
+  .exp-title {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+  .exp-desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* SKILLS BARS */
+  .skills-section { margin-top: 5rem; }
+  .skills-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    text-transform: uppercase;
+  }
+  .skill-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .skill-name {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    width: 160px;
+    flex-shrink: 0;
+  }
+  .skill-track {
+    flex: 1;
+    height: 3px;
+    background: var(--border);
+    position: relative;
+    overflow: visible;
+  }
+  .skill-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--blue));
+    width: 0;
+    transition: width 1.5s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+  }
+  .skill-fill::after {
+    content: '';
+    position: absolute;
+    right: -3px;
+    top: -3px;
+    width: 9px;
+    height: 9px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent);
+  }
+  .skill-pct {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    width: 35px;
+    text-align: right;
+  }
+
+  /* TOOLS GRID */
+  .tools-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 3rem;
+  }
+  .tool-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: transparent;
+    transition: all 0.3s;
+    cursor: default;
+  }
+  .tool-tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(232,255,0,0.05);
+    transform: translateY(-2px);
+  }
+
+  /* ─── EXPERIENCE ────────────────────────────────────────── */
+  #experience { background: var(--deep); }
+
+  .timeline {
+    position: relative;
+    padding-left: 3rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--blue), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 4rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -3.4rem;
+    top: 0.4rem;
+    width: 9px;
+    height: 9px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 16px var(--accent);
+  }
+
+  .tl-date {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .tl-company {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .tl-role {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+  .tl-desc {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 700px;
+  }
+
+  /* ─── PROJECTS ──────────────────────────────────────────── */
+  #projects { background: var(--black); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .project-card {
+    background: var(--carbon);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .project-card:hover { background: var(--panel); }
+  .project-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent2), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .project-card:hover::after { transform: scaleX(1); }
+
+  .proj-client {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .proj-name {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+  .proj-org {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+  }
+  .proj-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+  }
+  .proj-tag {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.6rem;
+    background: rgba(232,255,0,0.06);
+    border: 1px solid rgba(232,255,0,0.15);
+    color: var(--accent);
+  }
+
+  /* ─── CONTACT ───────────────────────────────────────────── */
+  #contact { background: var(--deep); }
+
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6vw;
+    align-items: center;
+  }
+  .contact-cta {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 6rem);
+    line-height: 1;
+    color: var(--white);
+  }
+  .contact-cta span { color: var(--accent); }
+
+  .contact-links { display: flex; flex-direction: column; gap: 1.5rem; }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    text-decoration: none;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(232,255,0,0.03);
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+  }
+  .contact-link:hover::before { transform: translateX(0); }
+  .contact-link:hover { border-color: var(--accent); }
+  .cl-icon { font-size: 1.5rem; }
+  .cl-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .cl-val {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  /* ─── FOOTER ────────────────────────────────────────────── */
+  footer {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    padding: 2rem 6vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ─── MOBILE NAV ─────────────────────────────────────────── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 200;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--accent);
+    transition: all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(8,8,8,0.97);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+  .mobile-nav-overlay.open { display: flex; }
+  .mobile-nav-overlay a {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .mobile-nav-overlay a:hover { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .hamburger { display: flex; }
+  }
+
+  /* ─── RPM GAUGE ─────────────────────────────────────────── */
+  .rpm-gauge {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    width: 80px;
+    height: 80px;
+    z-index: 100;
+    opacity: 0.7;
+  }
+  .rpm-gauge svg { width: 100%; height: 100%; }
+
+  /* REVEAL ANIMATION */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* GLITCH EFFECT */
+  .glitch {
+    position: relative;
+  }
+  .glitch::before, .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    background: transparent;
+  }
+  .glitch::before {
+    color: var(--accent2);
+    animation: glitch1 4s infinite;
+    clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+  }
+  .glitch::after {
+    color: var(--blue);
+    animation: glitch2 4s infinite;
+    clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+  }
+  @keyframes glitch1 {
+    0%, 90%, 100% { transform: none; opacity: 0; }
+    92% { transform: translate(-3px, 1px); opacity: 0.7; }
+    96% { transform: translate(3px, -1px); opacity: 0.7; }
+    98% { transform: none; opacity: 0; }
+  }
+  @keyframes glitch2 {
+    0%, 90%, 100% { transform: none; opacity: 0; }
+    93% { transform: translate(3px, -1px); opacity: 0.7; }
+    97% { transform: translate(-2px, 2px); opacity: 0.7; }
+    99% { transform: none; opacity: 0; }
+  }
+
+  /* COUNTER ANIMATION */
+  .counter { display: inline-block; }
+
+  /* ─── AI SECTION ─────────────────────────────────────────── */
+  #ai-section { background: var(--carbon); position: relative; overflow: hidden; }
+  #ai-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(0,212,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .ai-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4vw;
+    align-items: start;
+  }
+  .ai-headline {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    line-height: 1;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+  .ai-headline span { color: var(--blue); }
+  .ai-body {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: rgba(240,240,240,0.7);
+    margin-bottom: 2rem;
+  }
+  .ai-body strong { color: var(--blue); }
+  .ai-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid rgba(0,212,255,0.2);
+  }
+  .ai-pillar {
+    background: var(--deep);
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .ai-pillar:hover { background: var(--panel); }
+  .ai-pillar::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--blue), #9b59ff);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.4s;
+  }
+  .ai-pillar:hover::before { transform: scaleY(1); }
+  .pillar-icon { font-size: 1.8rem; flex-shrink: 0; }
+  .pillar-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+  }
+  .pillar-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+  .ai-cta-strip {
+    margin-top: 3rem;
+    padding: 2rem;
+    border: 1px solid rgba(0,212,255,0.2);
+    background: rgba(0,212,255,0.04);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .ai-cta-text {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--blue);
+    text-transform: uppercase;
+    flex: 1;
+    min-width: 200px;
+  }
+  .ai-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .ai-tag {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--blue);
+    background: rgba(0,212,255,0.05);
+    transition: all 0.3s;
+  }
+  .ai-tag:hover { background: rgba(0,212,255,0.15); transform: translateY(-2px); }
+
+  /* LEADERSHIP SECTION */
+  .leadership-banner {
+    background: linear-gradient(135deg, rgba(232,255,0,0.05) 0%, rgba(0,212,255,0.05) 100%);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 1.5rem 2rem;
+    margin-top: 2rem;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .lb-icon { font-size: 2rem; }
+  .lb-title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+  .lb-desc { font-size: 0.88rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.5; }
+
+  /* ═══════════════════════════════════════════════════════════
+     RESPONSIVE — Full coverage: 1280px · 1024px · 768px · 480px · 360px
+  ═══════════════════════════════════════════════════════════ */
+
+  /* Hide cursor on touch devices */
+  @media (hover: none) {
+    .cursor, .cursor-ring { display: none; }
+    body { cursor: auto; }
+  }
+
+  /* ── Large Desktop tweak (1280px+) ── */
+  @media (min-width: 1280px) {
+    .expertise-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* ── Tablet Landscape / Small Desktop (max 1024px) ── */
+  @media (max-width: 1024px) {
+    section { padding: 6vw 5vw; }
+
+    .hero-name { font-size: clamp(4rem, 12vw, 10rem); }
+    .hero-stats { gap: 2rem; }
+
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+
+    .expertise-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .ai-grid { grid-template-columns: 1fr; gap: 3rem; }
+
+    .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+
+    .projects-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .skill-name { width: 140px; font-size: 0.65rem; }
+  }
+
+  /* ── Tablet Portrait (max 768px) ── */
+  @media (max-width: 768px) {
+    section { padding: 12vw 5vw; }
+
+    /* NAV */
+    .hero-nav { top: 4vh; left: 5vw; }
+    .nav-links { display: none; }
+
+    /* HERO */
+    #hero { padding: 0 5vw 8vh; min-height: 100svh; }
+    .hero-badge { top: 4vh; right: 5vw; padding: 0.75rem 1rem; }
+    .hero-badge .badge-cert { font-size: 0.8rem; }
+    .hero-name { font-size: clamp(3.5rem, 15vw, 7rem); }
+    .hero-title { font-size: clamp(0.85rem, 3.5vw, 1.4rem); letter-spacing: 0.08em; }
+    .hero-stats { gap: 1.5rem; flex-wrap: wrap; margin-top: 2rem; }
+    .stat-num { font-size: 2.2rem; }
+    .hero-scroll { display: none; }
+
+    /* ABOUT */
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .patent-cards { grid-template-columns: 1fr; }
+    .detail-key { font-size: 0.65rem; padding: 0.85rem 1rem; }
+    .detail-val { font-size: 0.88rem; padding: 0.85rem 1rem; }
+
+    /* EXPERTISE */
+    .expertise-grid { grid-template-columns: 1fr; }
+    .skill-name { width: 120px; font-size: 0.62rem; letter-spacing: 0.1em; }
+    .tools-grid { gap: 0.4rem; }
+
+    /* AI SECTION */
+    .ai-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .ai-headline { font-size: clamp(2rem, 8vw, 3.5rem); }
+    .ai-cta-strip { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .ai-cta-text { min-width: unset; }
+
+    /* EXPERIENCE */
+    .timeline { padding-left: 2rem; }
+    .timeline-item::before { left: -2.4rem; }
+    .tl-company { font-size: 1.6rem; }
+
+    /* PROJECTS */
+    .projects-grid { grid-template-columns: 1fr; }
+
+    /* LEADERSHIP PANEL — inline grid to stacked */
+    .leadership-panel { grid-template-columns: 1fr !important; }
+
+    /* CONTACT */
+    .contact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .contact-cta { font-size: clamp(2rem, 8vw, 4rem); }
+
+    /* RPM gauge */
+    .rpm-gauge { width: 60px; height: 60px; bottom: 1rem; left: 1rem; }
+
+    /* SECTION TITLE */
+    .section-title { font-size: clamp(2.5rem, 10vw, 5rem); margin-bottom: 2.5rem; }
+  }
+
+  /* ── Large Phone (max 480px) ── */
+  @media (max-width: 480px) {
+    section { padding: 14vw 5vw; }
+
+    .hero-name { font-size: clamp(3rem, 18vw, 5rem); }
+    .hero-title { font-size: 0.8rem; }
+    .hero-eyebrow { font-size: 0.65rem; }
+    .hero-stats { gap: 1.2rem; }
+    .stat-num { font-size: 1.8rem; }
+    .stat-label { font-size: 0.55rem; }
+
+    .about-text { font-size: 1rem; }
+    .section-title { font-size: clamp(2rem, 12vw, 3.5rem); }
+
+    /* Detail table — switch to block on very small */
+    .detail-row { display: block; }
+    .detail-key {
+      display: block;
+      width: 100%;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 1rem 0.3rem;
+      font-size: 0.6rem;
+    }
+    .detail-val {
+      display: block;
+      width: 100%;
+      padding: 0.3rem 1rem 0.75rem;
+      font-size: 0.88rem;
+    }
+
+    .skill-row { gap: 0.8rem; }
+    .skill-name { width: 100px; font-size: 0.58rem; }
+    .skill-pct { font-size: 0.58rem; width: 28px; }
+
+    .exp-card { padding: 1.5rem; }
+    .project-card { padding: 1.5rem; }
+    .ai-pillar { padding: 1.2rem 1.5rem; gap: 1rem; }
+    .pillar-icon { font-size: 1.4rem; }
+
+    .timeline { padding-left: 1.5rem; }
+    .timeline-item::before { left: -1.9rem; width: 8px; height: 8px; }
+    .tl-company { font-size: 1.4rem; }
+    .tl-desc { font-size: 0.88rem; }
+
+    .contact-cta { font-size: clamp(1.8rem, 10vw, 3rem); }
+    .cl-val { font-size: 0.88rem; }
+
+    .hero-badge { padding: 0.6rem 0.8rem; }
+    .badge-cert { font-size: 0.72rem; }
+
+    .rpm-gauge { display: none; }
+
+    footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+  }
+
+  /* ── Small Phone (max 360px) ── */
+  @media (max-width: 360px) {
+    section { padding: 16vw 4vw; }
+    .hero-name { font-size: clamp(2.5rem, 20vw, 4rem); }
+    .hero-stats { gap: 1rem; }
+    .stat-num { font-size: 1.6rem; }
+    .nav-logo { font-size: 1.4rem; }
+    .section-title { font-size: clamp(1.8rem, 13vw, 3rem); }
+    .skill-name { width: 85px; font-size: 0.55rem; }
+    .tl-company { font-size: 1.2rem; }
+    .proj-name { font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Mobile Nav Overlay -->
+<div class="mobile-nav-overlay" id="mobileNav">
+  <a href="#about" class="mob-link">About</a>
+  <a href="#expertise" class="mob-link">Skills</a>
+  <a href="#ai-section" class="mob-link">AI</a>
+  <a href="#experience" class="mob-link">Experience</a>
+  <a href="#projects" class="mob-link">Projects</a>
+  <a href="#contact" class="mob-link">Contact</a>
+</div>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- RPM Gauge -->
+<div class="rpm-gauge" id="rpmGauge">
+  <svg viewBox="0 0 80 80">
+    <circle cx="40" cy="40" r="34" fill="none" stroke="#1a1a1f" stroke-width="6"/>
+    <circle cx="40" cy="40" r="34" fill="none" stroke="url(#gaugeGrad)" stroke-width="6"
+      stroke-linecap="round"
+      stroke-dasharray="180" stroke-dashoffset="180"
+      id="gaugeFill"
+      style="transform:rotate(-210deg);transform-origin:center;transition:stroke-dashoffset 0.3s"/>
+    <text x="40" y="44" text-anchor="middle" fill="#e8ff00" font-family="Space Mono" font-size="8" letter-spacing="1">SCROLL</text>
+    <defs>
+      <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#e8ff00"/>
+        <stop offset="100%" stop-color="#00d4ff"/>
+      </linearGradient>
+    </defs>
+  </svg>
+</div>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="speed-lines" id="speedLines"></div>
+
+  <nav class="hero-nav">
+    <div class="nav-logo">KC</div>
+    <div class="nav-links">
+      <a href="#about" class="nav-link">About</a>
+      <a href="#expertise" class="nav-link">Skills</a>
+      <a href="#ai-section" class="nav-link">AI</a>
+      <a href="#experience" class="nav-link">Experience</a>
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="hero-badge">
+    <div class="badge-text">Certified</div>
+    <div class="badge-cert">ISTQB ✓</div>
+    <div class="badge-cert" style="color: var(--blue); margin-top:2px;">2 PATENTS</div>
+  </div>
+
+  <div style="position:relative;z-index:2;">
+    <div class="hero-eyebrow">// EV · Automotive · AI Engineer</div>
+    <div class="hero-name glitch" data-text="KARTHIK">KARTHIK</div>
+    <div class="hero-title">ePowertrain · ECU Virtualization · AI / LLMs</div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="9">0</span>+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="6">0</span></div>
+        <div class="stat-label">Major Projects</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="2">0</span></div>
+        <div class="stat-label">Patents Held</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="3">0</span></div>
+        <div class="stat-label">Top Companies</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <div class="scroll-text">Scroll</div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+  <div class="section-label reveal">Profile</div>
+  <div class="section-title reveal">ABOUT <span>ME</span></div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm a <strong>Senior Automotive Engineer & AI Practitioner</strong> specializing in Electric Vehicle ePowertrain systems, ECU Virtualization, and AUTOSAR-compliant software development. With nearly a decade of hands-on experience across global OEMs and startups, I bridge the gap between hardware constraints and high-performance software.</p>
+      <p>Currently leading <strong>AI and Embedded Products</strong> at Planet Material Labs, I combine deep automotive domain knowledge with modern AI capabilities — including <strong>Large Language Models (LLMs), prompt engineering, and RAG (Retrieval-Augmented Generation)</strong> pipeline creation — to build next-generation intelligent automotive systems.</p>
+      <p>A proven <strong>technical leader</strong>, I've led cross-functional teams as ePowertrain Lead at Planet Electric Inc., SiL Lead at Bosch (Mercedes-Benz AG), and Product Lead at Planet Material Labs. I hold <strong>two patents in child vehicle safety</strong>, reflecting my drive to innovate beyond performance into critical safety systems.</p>
+    </div>
+    <div>
+      <div class="about-details reveal">
+        <div class="detail-row">
+          <div class="detail-key">Location</div>
+          <div class="detail-val">Bengaluru, India</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-key">Domain</div>
+          <div class="detail-val">EV · Powertrain · ECU Virtualization</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-key">Education</div>
+          <div class="detail-val">B.E. Electronics & Communication<br><small style="color:var(--muted)">NMIT, VTU · CGPA 8.54</small></div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-key">Certification</div>
+          <div class="detail-val">ISTQB Certified</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-key">LinkedIn</div>
+          <div class="detail-val"><a href="https://www.linkedin.com/in/karthic489/" target="_blank">linkedin.com/in/karthic489</a></div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-key">Email</div>
+          <div class="detail-val"><a href="mailto:karthic489@gmail.com">karthic489@gmail.com</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="patent-cards reveal">
+    <div class="patent-card">
+      <div class="patent-num">Patent #01 — Child Safety</div>
+      <div class="patent-title">Innovative Child Safety System Integration for Automotive Vehicles</div>
+    </div>
+    <div class="patent-card">
+      <div class="patent-num">Patent #02 — Child Safety</div>
+      <div class="patent-title">Advanced Vehicle-Based Child Protection & Monitoring Technology</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── EXPERTISE ─── -->
+<section id="expertise">
+  <div class="section-label reveal">Capabilities</div>
+  <div class="section-title reveal">TECH <span>STACK</span></div>
+
+  <div class="expertise-grid reveal">
+    <div class="exp-card">
+      <span class="exp-icon">⚡</span>
+      <div class="exp-title">ePowertrain</div>
+      <div class="exp-desc">End-to-end EV powertrain architecture, VCU development, component sizing for 1-Ton & 1.5-Ton eLCV platforms. IDC/MIDC drive cycle simulation.</div>
+    </div>
+    <div class="exp-card">
+      <span class="exp-icon">🔲</span>
+      <div class="exp-title">ECU Virtualization</div>
+      <div class="exp-desc">Software-in-the-Loop (SiL) integration for virtual ECUs. dSPACE SystemDesk, VEOS Player, ControlDesk. Hardware abstraction and virtual driver implementations.</div>
+    </div>
+    <div class="exp-card">
+      <span class="exp-icon">🛠</span>
+      <div class="exp-title">AUTOSAR</div>
+      <div class="exp-desc">AUTOSAR-compliant software development with TOP-DOWN and BOTTOM-UP model-based approaches. Legacy migration, ARXML creation, SWC development.</div>
+    </div>
+    <div class="exp-card">
+      <span class="exp-icon">📐</span>
+      <div class="exp-title">Model-Based Dev</div>
+      <div class="exp-desc">MATLAB/Simulink modeling, auto code generation via Embedded Coder, Reactis-based test case generation. MIL/SIL/Coverage testing.</div>
+    </div>
+    <div class="exp-card">
+      <span class="exp-icon">🤖</span>
+      <div class="exp-title">Automation</div>
+      <div class="exp-desc">Python-driven automation for CI/CD pipelines, SystemDesk API, VEOS Player API, ControlDesk scripting. Utility tool development with GUI and installer packaging.</div>
+    </div>
+    <div class="exp-card">
+      <span class="exp-icon">🔗</span>
+      <div class="exp-title">Vector Toolchain</div>
+      <div class="exp-desc">vVirtualTarget, DaVinci Configurator/Developer, CANoe for network simulation and ECU configuration. CAN bus analysis and competitor architecture reverse engineering.</div>
+    </div>
+    <div class="exp-card" style="border-left: 2px solid var(--blue);">
+      <span class="exp-icon">🧠</span>
+      <div class="exp-title">AI / LLMs</div>
+      <div class="exp-desc">Hands-on experience with Large Language Models — GPT, Claude, Gemini and open-source models. Applying LLMs to automotive use-cases: documentation generation, diagnostic assistants, and intelligent embedded product interfaces.</div>
+    </div>
+    <div class="exp-card" style="border-left: 2px solid var(--blue);">
+      <span class="exp-icon">💬</span>
+      <div class="exp-title">Prompt Engineering</div>
+      <div class="exp-desc">Advanced prompt design for complex multi-step reasoning, structured output generation, few-shot learning, and chain-of-thought techniques. Specialising in automotive domain prompting for technical document extraction and analysis.</div>
+    </div>
+    <div class="exp-card" style="border-left: 2px solid var(--blue);">
+      <span class="exp-icon">📚</span>
+      <div class="exp-title">RAG Pipelines</div>
+      <div class="exp-desc">End-to-end Retrieval-Augmented Generation pipeline creation — vector databases, embeddings, chunking strategies, and hybrid search. Building RAG systems for automotive knowledge bases, technical spec retrieval, and intelligent Q&A.</div>
+    </div>
+  </div>
+
+  <div class="skills-section">
+    <div class="skills-title reveal">Proficiency</div>
+    <div id="skillsContainer">
+      <div class="skill-row reveal"><span class="skill-name">ePowertrain / VCU</span><div class="skill-track"><div class="skill-fill" data-width="95"></div></div><span class="skill-pct">95%</span></div>
+      <div class="skill-row reveal"><span class="skill-name">ECU Virtualization</span><div class="skill-track"><div class="skill-fill" data-width="92"></div></div><span class="skill-pct">92%</span></div>
+      <div class="skill-row reveal"><span class="skill-name">AUTOSAR</span><div class="skill-track"><div class="skill-fill" data-width="90"></div></div><span class="skill-pct">90%</span></div>
+      <div class="skill-row reveal"><span class="skill-name">MATLAB / Simulink</span><div class="skill-track"><div class="skill-fill" data-width="88"></div></div><span class="skill-pct">88%</span></div>
+      <div class="skill-row reveal"><span class="skill-name">Python</span><div class="skill-track"><div class="skill-fill" data-width="82"></div></div><span class="skill-pct">82%</span></div>
+      <div class="skill-row reveal"><span class="skill-name">Embedded C</span><div class="skill-track"><div class="skill-fill" data-width="85"></div></div><span class="skill-pct">85%</span></div>
+      <div class="skill-row reveal"><span class="skill-name">dSPACE Toolchain</span><div class="skill-track"><div class="skill-fill" data-width="87"></div></div><span class="skill-pct">87%</span></div>
+      <div class="skill-row reveal"><span class="skill-name">Vector (CANoe)</span><div class="skill-track"><div class="skill-fill" data-width="83"></div></div><span class="skill-pct">83%</span></div>
+      <div class="skill-row reveal" style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)"><span class="skill-name" style="color:var(--blue)">LLM Integration</span><div class="skill-track"><div class="skill-fill" data-width="88" style="background:linear-gradient(90deg,var(--blue),#9b59ff)"></div></div><span class="skill-pct">88%</span></div>
+      <div class="skill-row reveal"><span class="skill-name" style="color:var(--blue)">Prompt Engineering</span><div class="skill-track"><div class="skill-fill" data-width="90" style="background:linear-gradient(90deg,var(--blue),#9b59ff)"></div></div><span class="skill-pct">90%</span></div>
+      <div class="skill-row reveal"><span class="skill-name" style="color:var(--blue)">RAG Pipelines</span><div class="skill-track"><div class="skill-fill" data-width="85" style="background:linear-gradient(90deg,var(--blue),#9b59ff)"></div></div><span class="skill-pct">85%</span></div>
+    </div>
+  </div>
+
+  <div class="tools-grid reveal">
+    <span class="tool-tag">vVirtualTarget</span>
+    <span class="tool-tag">DaVinci Configurator</span>
+    <span class="tool-tag">DaVinci Developer</span>
+    <span class="tool-tag">CANoe</span>
+    <span class="tool-tag">MATLAB</span>
+    <span class="tool-tag">Simulink</span>
+    <span class="tool-tag">dSPACE SystemDesk</span>
+    <span class="tool-tag">VEOS Player</span>
+    <span class="tool-tag">ControlDesk</span>
+    <span class="tool-tag">Reactis</span>
+    <span class="tool-tag">MXAM Drive</span>
+    <span class="tool-tag">Embedded Coder</span>
+    <span class="tool-tag">Python</span>
+    <span class="tool-tag">Embedded C</span>
+    <span class="tool-tag">Linux / UNIX</span>
+    <span class="tool-tag">AutomationDesk</span>
+    <span class="tool-tag" style="border-color:rgba(0,212,255,0.4);color:var(--blue);background:rgba(0,212,255,0.05)">GPT-4 / Claude / Gemini</span>
+    <span class="tool-tag" style="border-color:rgba(0,212,255,0.4);color:var(--blue);background:rgba(0,212,255,0.05)">LangChain</span>
+    <span class="tool-tag" style="border-color:rgba(0,212,255,0.4);color:var(--blue);background:rgba(0,212,255,0.05)">RAG Pipelines</span>
+    <span class="tool-tag" style="border-color:rgba(0,212,255,0.4);color:var(--blue);background:rgba(0,212,255,0.05)">Vector Databases</span>
+    <span class="tool-tag" style="border-color:rgba(0,212,255,0.4);color:var(--blue);background:rgba(0,212,255,0.05)">Prompt Engineering</span>
+    <span class="tool-tag" style="border-color:rgba(0,212,255,0.4);color:var(--blue);background:rgba(0,212,255,0.05)">Embeddings</span>
+  </div>
+</section>
+
+<!-- ─── AI & LLM ─── -->
+<section id="ai-section">
+  <div class="section-label reveal">Emerging Expertise</div>
+  <div class="ai-grid">
+    <div>
+      <div class="ai-headline reveal">AI · <span>LLMs</span> ·<br>RAG<span style="color:var(--accent)">.</span></div>
+      <div class="ai-body reveal">
+        Beyond automotive hardware, I bring <strong>strong hands-on experience with Large Language Models, advanced prompt engineering, and building production RAG pipelines</strong>. At Planet Material Labs, I'm actively converging these AI capabilities with embedded automotive systems — creating intelligent products that understand technical documentation, reason over vehicle data, and assist engineers in real time.
+      </div>
+      <div class="ai-cta-strip reveal">
+        <div class="ai-cta-text">// Currently working with</div>
+        <div class="ai-tags">
+          <span class="ai-tag">GPT-4o</span>
+          <span class="ai-tag">Claude</span>
+          <span class="ai-tag">Gemini</span>
+          <span class="ai-tag">LangChain</span>
+          <span class="ai-tag">FAISS / Chroma</span>
+          <span class="ai-tag">OpenAI Embeddings</span>
+          <span class="ai-tag">Ollama</span>
+        </div>
+      </div>
+    </div>
+    <div class="ai-pillars reveal">
+      <div class="ai-pillar">
+        <span class="pillar-icon">🧠</span>
+        <div>
+          <div class="pillar-title">LLM Integration</div>
+          <div class="pillar-desc">Deploying and fine-tuning large language models for domain-specific automotive applications. API integration with GPT, Claude, and Gemini for intelligent document parsing, diagnostic reasoning, and requirements generation.</div>
+        </div>
+      </div>
+      <div class="ai-pillar">
+        <span class="pillar-icon">💬</span>
+        <div>
+          <div class="pillar-title">Prompt Engineering</div>
+          <div class="pillar-desc">Designing advanced prompt architectures — system prompts, few-shot examples, chain-of-thought reasoning, and structured output schemas. Specialising in prompts for technical automotive documentation, AUTOSAR spec analysis, and code generation.</div>
+        </div>
+      </div>
+      <div class="ai-pillar">
+        <span class="pillar-icon">📚</span>
+        <div>
+          <div class="pillar-title">RAG Pipeline Creation</div>
+          <div class="pillar-desc">End-to-end RAG system design: document ingestion, chunking strategy, embedding model selection, vector store setup, hybrid retrieval, and grounded response generation. Built RAG systems on top of automotive knowledge bases and technical spec corpora.</div>
+        </div>
+      </div>
+      <div class="ai-pillar">
+        <span class="pillar-icon">🚗</span>
+        <div>
+          <div class="pillar-title">Automotive AI Fusion</div>
+          <div class="pillar-desc">Unique intersection of deep automotive engineering and AI — building LLM-powered tools for vehicle diagnostics, ECU documentation Q&A, AUTOSAR compliance checking, and embedded product intelligence.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── EXPERIENCE ─── -->
+<section id="experience">
+  <div class="section-label reveal">Career</div>
+  <div class="section-title reveal">WORK <span>HISTORY</span></div>
+
+  <!-- LEADERSHIP HIGHLIGHT -->
+  <div class="leadership-panel reveal" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:4rem">
+    <div style="background:var(--carbon);padding:2rem;border-top:2px solid var(--accent)">
+      <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.75rem">Planet Material Labs</div>
+      <div style="font-family:var(--font-display);font-size:1.4rem;color:var(--white);margin-bottom:0.5rem">PRODUCT LEAD</div>
+      <div style="font-size:0.85rem;color:var(--muted);line-height:1.6">Directing AI + Embedded product strategy. Full ownership of technology roadmap, team direction, and delivery from concept to production.</div>
+    </div>
+    <div style="background:var(--carbon);padding:2rem;border-top:2px solid var(--accent2)">
+      <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent2);margin-bottom:0.75rem">Planet Electric Inc</div>
+      <div style="font-family:var(--font-display);font-size:1.4rem;color:var(--white);margin-bottom:0.5rem">TECHNICAL LEAD</div>
+      <div style="font-size:0.85rem;color:var(--muted);line-height:1.6">End-to-end ePowertrain ownership. Led supplier negotiations, vehicle architecture decisions, and cross-team delivery for two commercial EV programs.</div>
+    </div>
+    <div style="background:var(--carbon);padding:2rem;border-top:2px solid var(--blue)">
+      <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);margin-bottom:0.75rem">Bosch · Mercedes-Benz AG</div>
+      <div style="font-family:var(--font-display);font-size:1.4rem;color:var(--white);margin-bottom:0.5rem">SiL LEAD</div>
+      <div style="font-size:0.85rem;color:var(--muted);line-height:1.6">Single point of contact for vECU releases. Led 5+ cross-functional stakeholder groups, defined CI integration processes, and owned customer-facing delivery.</div>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="tl-date">Feb 2026 — Present</div>
+      <div class="tl-company">PLANET MATERIAL LABS</div>
+      <div class="tl-role">Lead — AI & Embedded Products</div>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem">
+        <span style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.8rem;border:1px solid rgba(232,255,0,0.4);color:var(--accent);background:rgba(232,255,0,0.06)">🏆 Product Lead</span>
+        <span style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.8rem;border:1px solid rgba(0,212,255,0.4);color:var(--blue);background:rgba(0,212,255,0.06)">🧠 AI Strategy</span>
+        <span style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.8rem;border:1px solid rgba(0,212,255,0.4);color:var(--blue);background:rgba(0,212,255,0.06)">⚡ Team Builder</span>
+      </div>
+      <div class="tl-desc">Leading the full product vision and development of AI-powered embedded systems. Driving <strong style="color:var(--white)">LLM integration, RAG pipeline design, and intelligent product roadmaps</strong> — merging a decade of automotive domain expertise with cutting-edge AI to ship production-grade solutions. Responsible for technology direction, team mentoring, and cross-functional stakeholder alignment.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-date">May 2024 — Feb 2026</div>
+      <div class="tl-company">PLANET ELECTRIC INC</div>
+      <div class="tl-role">ePowertrain Lead & VCU Lead</div>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem">
+        <span style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.8rem;border:1px solid rgba(232,255,0,0.4);color:var(--accent);background:rgba(232,255,0,0.06)">🏆 Technical Lead</span>
+        <span style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.8rem;border:1px solid rgba(255,77,0,0.4);color:var(--accent2);background:rgba(255,77,0,0.06)">⚡ ePowertrain</span>
+        <span style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.8rem;border:1px solid rgba(255,77,0,0.4);color:var(--accent2);background:rgba(255,77,0,0.06)">🚗 VCU Architect</span>
+        <span style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.8rem;border:1px solid rgba(232,255,0,0.4);color:var(--accent);background:rgba(232,255,0,0.06)">👥 Supplier Management</span>
+      </div>
+      <div class="tl-desc">Sole technical lead owning end-to-end ePowertrain architecture for the <strong style="color:var(--white)">1-Ton & 1.5-Ton eLCV programs</strong>. Orchestrated component sizing, vehicle simulation (IDC/MIDC), and electrical system requirements across Battery, Motor, VCU, and Cluster. Led supplier identification visits and technical negotiations. Independently spearheaded the <strong style="color:var(--white)">Last Mile eLCV Retrofit</strong> — reverse-engineered competitor CAN data, designed new cluster firmware, and re-integrated a complete powertrain into a lightweight chassis structure.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-date">Jan 2021 — May 2024</div>
+      <div class="tl-company">BOSCH GLOBAL</div>
+      <div class="tl-role">SiL Lead Engineer</div>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem">
+        <span style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.8rem;border:1px solid rgba(232,255,0,0.4);color:var(--accent);background:rgba(232,255,0,0.06)">🏆 SiL Lead</span>
+        <span style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.8rem;border:1px solid rgba(0,212,255,0.4);color:var(--blue);background:rgba(0,212,255,0.06)">🚘 Mercedes-Benz AG</span>
+        <span style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.8rem;border:1px solid rgba(0,212,255,0.4);color:var(--blue);background:rgba(0,212,255,0.06)">👥 Cross-Functional Lead</span>
+        <span style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.8rem;border:1px solid rgba(232,255,0,0.4);color:var(--accent);background:rgba(232,255,0,0.06)">🔁 CI/CD Owner</span>
+      </div>
+      <div class="tl-desc">Led SiL integration for <strong style="color:var(--white)">Mercedes-Benz AG's Body Controller ECU Virtualization (Type-3)</strong>, managing MY 2024 feature delivery from requirements to customer release. Owned coordination across Hardware-SW Integrators, Architects, Developers, V&V, and SW Management. <strong style="color:var(--white)">Defined SiL integration processes and CI standards</strong>, automated recurring manual change cycles, and was the single point of contact for customer clarifications and release gate decisions.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-date">Jan 2017 — Nov 2020</div>
+      <div class="tl-company">KPIT TECHNOLOGIES</div>
+      <div class="tl-role">Automotive & Engineering Developer</div>
+      <div class="tl-desc">Delivered three major programs for Fiat Chrysler Automotive (FCA USA LLC): Physics-Based Model-Based Development for Powertrain SWCs, ECU Virtualization using dSPACE toolchain with full Python automation, and AUTOSAR migration of hybrid ePowertrain algorithms with multi-ring architecture support.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROJECTS ─── -->
+<section id="projects">
+  <div class="section-label reveal">Portfolio</div>
+  <div class="section-title reveal">KEY <span>PROJECTS</span></div>
+
+  <div class="projects-grid reveal">
+    <div class="project-card">
+      <div class="proj-client">Planet Electric Inc</div>
+      <div class="proj-name">eLCV 1T & 1.5T HW/SW Architecture</div>
+      <div class="proj-org">ePowertrain Lead</div>
+      <div class="tl-desc" style="font-size:0.9rem;color:var(--muted);line-height:1.6">Full e-powertrain architecture design. Vehicle simulation for Range, Load & Torque across IDC/MIDC drive cycles. Electrical component requirement creation including Battery, Motor & VCU.</div>
+      <div class="proj-tags"><span class="proj-tag">EV Architecture</span><span class="proj-tag">VCU</span><span class="proj-tag">Drive Cycle Sim</span></div>
+    </div>
+    <div class="project-card">
+      <div class="proj-client">Planet Electric Inc</div>
+      <div class="proj-name">Last Mile eLCV 1T Retrofit</div>
+      <div class="proj-org">ePowertrain Lead</div>
+      <div class="tl-desc" style="font-size:0.9rem;color:var(--muted);line-height:1.6">Full cargo vehicle retrofit — CAN data reverse-engineering, safety-compliant dismantle planning, new Cluster development, and powertrain re-integration onto lightweight chassis.</div>
+      <div class="proj-tags"><span class="proj-tag">CAN Analysis</span><span class="proj-tag">Retrofit</span><span class="proj-tag">Cluster Dev</span></div>
+    </div>
+    <div class="project-card">
+      <div class="proj-client">Mercedes-Benz AG · Bosch</div>
+      <div class="proj-name">Body Controller ECU Virtualization</div>
+      <div class="proj-org">Lead SiL Integrator — Type-3 vECU</div>
+      <div class="tl-desc" style="font-size:0.9rem;color:var(--muted);line-height:1.6">MY 2024 feature delivery for Type-3 Virtual ECU. Hardware abstraction, virtual driver implementation, CI automation, AUTOSAR-compliant SW integration, and AutomationDesk test environment support.</div>
+      <div class="proj-tags"><span class="proj-tag">vECU</span><span class="proj-tag">SiL</span><span class="proj-tag">AUTOSAR</span><span class="proj-tag">Mercedes-Benz</span></div>
+    </div>
+    <div class="project-card">
+      <div class="proj-client">FCA USA · KPIT</div>
+      <div class="proj-name">ePT-Hybrid AUTOSAR Migration</div>
+      <div class="proj-org">Senior Software Developer</div>
+      <div class="tl-desc" style="font-size:0.9rem;color:var(--muted);line-height:1.6">Multi-ring architecture AUTOSAR migration for electric & hybrid powertrain. Full round-trip model development, ARXML creation, auto code gen via Embedded Coder, MIL/SIL functional testing.</div>
+      <div class="proj-tags"><span class="proj-tag">AUTOSAR Migration</span><span class="proj-tag">Hybrid PT</span><span class="proj-tag">Reactis</span></div>
+    </div>
+    <div class="project-card">
+      <div class="proj-client">FCA USA · KPIT</div>
+      <div class="proj-name">Powertrain ECU Virtualization</div>
+      <div class="proj-org">Senior Software Developer</div>
+      <div class="tl-desc" style="font-size:0.9rem;color:var(--muted);line-height:1.6">Full Powertrain vECU pipeline using dSPACE ecosystem — SystemDesk, VEOS Player, ControlDesk. End-to-end Python automation of .sic, .sdf generation and test environment. Custom UI utility tool with .exe installer.</div>
+      <div class="proj-tags"><span class="proj-tag">dSPACE</span><span class="proj-tag">Python Automation</span><span class="proj-tag">vECU</span></div>
+    </div>
+    <div class="project-card">
+      <div class="proj-client">FCA USA · KPIT</div>
+      <div class="proj-name">Powertrain Physics-Based MBD</div>
+      <div class="proj-org">Automotive & Engineering Developer</div>
+      <div class="tl-desc" style="font-size:0.9rem;color:var(--muted);line-height:1.6">SWC development across Combustion Control, Fuel Flow, Gas Flow, After-Treatment. Complete Simulink model development from legacy CPP/SRD, MAAB compliance testing, full ADD documentation.</div>
+      <div class="proj-tags"><span class="proj-tag">MBD</span><span class="proj-tag">Simulink</span><span class="proj-tag">MAAB</span><span class="proj-tag">FCA</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="section-label reveal">Get In Touch</div>
+  <div class="contact-inner">
+    <div>
+      <div class="contact-cta reveal">LET'S BUILD THE FUTURE OF <span>MOBILITY</span></div>
+    </div>
+    <div class="contact-links reveal">
+      <a class="contact-link" href="mailto:karthic489@gmail.com">
+        <span class="cl-icon">✉️</span>
+        <div>
+          <div class="cl-label">Email</div>
+          <div class="cl-val">karthic489@gmail.com</div>
+        </div>
+      </a>
+      <a class="contact-link" href="https://www.linkedin.com/in/karthic489/" target="_blank">
+        <span class="cl-icon">💼</span>
+        <div>
+          <div class="cl-label">LinkedIn</div>
+          <div class="cl-val">linkedin.com/in/karthic489</div>
+        </div>
+      </a>
+      <a class="contact-link" href="#">
+        <span class="cl-icon">📍</span>
+        <div>
+          <div class="cl-label">Location</div>
+          <div class="cl-val">Bengaluru, India</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-name">KARTHIK C</div>
+  <div class="footer-copy">© 2026 · Automotive & EV Engineer · Bengaluru</div>
+</footer>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+if (cursor && cursorRing) {
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    cursorRing.style.left = rx + 'px';
+    cursorRing.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .exp-card, .project-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+      cursorRing.style.width = '60px';
+      cursorRing.style.height = '60px';
+      cursorRing.style.borderColor = '#e8ff00';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '12px';
+      cursor.style.height = '12px';
+      cursorRing.style.width = '40px';
+      cursorRing.style.height = '40px';
+      cursorRing.style.borderColor = 'rgba(232,255,0,0.6)';
+    });
+  });
+}
+
+// SPEED LINES
+const sl = document.getElementById('speedLines');
+function createSpeedLine() {
+  const line = document.createElement('div');
+  line.className = 'speed-line';
+  line.style.top = Math.random() * 100 + '%';
+  line.style.animationDelay = Math.random() * 3 + 's';
+  line.style.animationDuration = (2 + Math.random() * 2) + 's';
+  sl.appendChild(line);
+  setTimeout(() => line.remove(), 5000);
+}
+setInterval(createSpeedLine, 600);
+
+// SCROLL REVEAL
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// TIMELINE REVEAL
+const tlObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 150);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.timeline-item').forEach(el => tlObserver.observe(el));
+
+// SKILL BAR ANIMATION
+const skillObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    document.querySelectorAll('.skill-fill').forEach((fill, i) => {
+      setTimeout(() => {
+        fill.style.width = fill.dataset.width + '%';
+      }, i * 120);
+    });
+    skillObserver.disconnect();
+  }
+}, { threshold: 0.3 });
+
+const sc = document.getElementById('skillsContainer');
+if (sc) skillObserver.observe(sc);
+
+// COUNTER ANIMATION
+function animateCounter(el, target) {
+  let current = 0;
+  const step = target / 40;
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = Math.floor(current);
+    if (current >= target) clearInterval(timer);
+  }, 40);
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    document.querySelectorAll('.counter').forEach(el => {
+      animateCounter(el, parseInt(el.dataset.target));
+    });
+    counterObserver.disconnect();
+  }
+}, { threshold: 0.5 });
+counterObserver.observe(document.getElementById('hero'));
+// trigger immediately since hero is visible on load
+setTimeout(() => {
+  document.querySelectorAll('.counter').forEach(el => animateCounter(el, parseInt(el.dataset.target)));
+}, 1200);
+
+// RPM GAUGE (scroll indicator)
+const gaugeFill = document.getElementById('gaugeFill');
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+  const dashOffset = 180 - (pct * 180);
+  if (gaugeFill) gaugeFill.style.strokeDashoffset = dashOffset;
+});
+
+// HAMBURGER MENU
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobileNav');
+if (hamburger && mobileNav) {
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+  });
+  document.querySelectorAll('.mob-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileNav.classList.remove('open');
+    });
+  });
+}
+</script>
+</body>
+</html>
